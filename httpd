@@ -1,0 +1,22 @@
+Alias /bsweb/ "/u/bsweb/progr/"
+<Directory "/u/bsweb/progr/">
+    Options Indexes MultiViews FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+</Directory>
+
+Alias /bsweb/ "C:/TRADESIS/LEBES/bsweb/"
+<Directory "C:/TRADESIS/LEBES/bsweb">
+    Options Indexes MultiViews FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    Require all granted
+</Directory>
+
+Criar Diretorio
+C:\ws\log
+
+
+
