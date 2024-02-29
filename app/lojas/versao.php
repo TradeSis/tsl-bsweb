@@ -1,7 +1,7 @@
 <?php
-/* helio 092022 - reversa lojas  */
 
-include "config.php";
+
+include __DIR__ . "/../config.php";
 
 if ($versao==""){$versao="1";}
 
