@@ -1,18 +1,19 @@
 <?php
 /* helio 092022 - Reversa Lojas  */
 
-
-//echo "metodo=".$metodo."\n";
-//echo "funcao=".$funcao."\n";
-//echo "parametro=".$parametro."\n";
-
+/*
+echo "metodo=".$metodo."\n";
+echo "funcao=".$funcao."\n";
+echo "parametro=".$parametro."\n";
+*/
 
 $explode = explode("/",$funcao);
+
 
 if ($explode[0]) {
   $funcao = $explode[0];
 }
-if ($explode[1]) {
+if (isset($explode[1])) {
   $parametro2 = $explode[1];
 }
 /*if ($explode[2]) {
@@ -39,12 +40,12 @@ if ($parametro=="cliente") {
   $parametro=null;
 }
 
-
-//echo "funcao=".$funcao."\n";
-//echo "parametro=".$parametro."\n";
-//echo "parametro2=".$parametro2."\n";
-//echo "parametro3=".$parametro3."\n";
-
+/*
+echo "funcao=".$funcao."\n";
+echo "parametro=".$parametro."\n";
+echo "parametro2=".$parametro2."\n";
+echo "parametro3=".$parametro3."\n";
+*/
 
 if ($metodo=="GET"){
 /*  if (!isset($funcao)) {
