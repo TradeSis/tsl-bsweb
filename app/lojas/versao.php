@@ -1,7 +1,7 @@
 <?php
 
 
-include __DIR__ . "/../config.php";
+include "config.php";
 
 if ($versao==""){$versao="1";}
 
