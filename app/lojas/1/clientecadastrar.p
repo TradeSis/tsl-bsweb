@@ -119,7 +119,7 @@ do on error undo.
     create clien.
     assign
         clien.clicod = par-clicod .
-        clien.ciccgc = string(ttentrada.cpfCnpj).
+        clien.ciccgc = trim(string(dec(ttentrada.cpfCnpj),"99999999999")).
         clien.clinom = string(ttentrada.nomeCliente).
         clien.tippes = yes.
         clien.etbcad = vetbcod.
@@ -127,14 +127,18 @@ do on error undo.
         clien.fone = ttentrada.telefone.
         clien.datexp = today.
 
-    create neuclien.
-    neuclien.cpfcnpj = dec(clien.ciccgc).
-    neuclien.tippes  = clien.tippes.
-    neuclien.etbcod  = clien.etbcad.
-    neuclien.dtcad   = today.
-    neuclien.nome_pessoa = clien.clinom.
-    neuclien.clicod = clien.clicod.
-    
+    find neuclien where  neuclien.cpfcnpj = dec(clien.ciccgc) no-lock no-error.
+    if not avail neuclien
+    then do:
+        create neuclien.
+        neuclien.cpfcnpj = dec(clien.ciccgc).
+        neuclien.tippes  = clien.tippes.
+        neuclien.etbcod  = clien.etbcad.
+        neuclien.dtcad   = today.
+        neuclien.nome_pessoa = clien.clinom.
+        neuclien.clicod = clien.clicod.
+    end.
+        
     create ttclien.
     ttclien.codigoFilial    = vetbcod.
     ttclien.codigoCliente   = par-clicod.
