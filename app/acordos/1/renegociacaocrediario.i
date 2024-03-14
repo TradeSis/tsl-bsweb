@@ -95,7 +95,7 @@ DEFINE TEMP-TABLE ttparcelas NO-UNDO SERIALIZE-NAME "parcelas"
         field valorSeguro as char 
         field situacao as char
 index x is unique primary idpai asc id asc.
-
+/*
 DEFINE TEMP-TABLE ttseguro NO-UNDO SERIALIZE-NAME "seguro"
         field id as char 
         field idPai as char 
@@ -109,7 +109,7 @@ DEFINE TEMP-TABLE ttseguro NO-UNDO SERIALIZE-NAME "seguro"
         field dataInicioVigencia as char 
         field dataFimVigencia as char 
 index x is unique primary idpai asc id asc.
-
+*/
 DEFINE TEMP-TABLE ttcartaoPresente NO-UNDO SERIALIZE-NAME "cartaoPresente"
         field id as char 
         field idPai as char 
@@ -224,7 +224,7 @@ index x is unique primary idpai asc id asc.
 
 
 DEFINE DATASET renegociacaoCrediarioEntrada FOR ttrenegociacaoCrediario, ttparcelasRenegociadas,
-ttrecebimentos , ttcartaoLebes, ttcontrato, ttparcelas, ttseguro, ttcartaoPresente, ttcartaoDebito, ttvaleTrocaGarantida, ttcartaoCredito, ttvaleTroca, ttcheque
+ttrecebimentos , ttcartaoLebes, ttcontrato, ttparcelas, /*ttseguro*/ ttcartaoPresente, ttcartaoDebito, ttvaleTrocaGarantida, ttcartaoCredito, ttvaleTroca, ttcheque
     , ttpixdebito
    DATA-RELATION for0 FOR ttrenegociacaoCrediario, ttparcelasRenegociadas      RELATION-FIELDS(ttrenegociacaoCrediario.id,ttparcelasRenegociadas.idpai) NESTED
 
@@ -233,7 +233,7 @@ ttrecebimentos , ttcartaoLebes, ttcontrato, ttparcelas, ttseguro, ttcartaoPresen
    DATA-RELATION for12 FOR ttrecebimentos, ttcontrato            RELATION-FIELDS(ttrecebimentos.id,ttcontrato.id) NESTED
    
     DATA-RELATION for1211 FOR ttcontrato , ttparcelas             RELATION-FIELDS(ttcontrato.id,ttparcelas.idpai) NESTED
-    DATA-RELATION for1212 FOR ttcontrato , ttseguro               RELATION-FIELDS(ttcontrato.id,ttseguro.idpai) NESTED
+/*    DATA-RELATION for1212 FOR ttcontrato , ttseguro               RELATION-FIELDS(ttcontrato.id,ttseguro.idpai) NESTED */
   DATA-RELATION for13 FOR ttrecebimentos, ttcartaoPresente         RELATION-FIELDS(ttrecebimentos.id,ttcartaoPresente.id) NESTED
   DATA-RELATION for14 FOR ttrecebimentos, ttcartaoDebito         RELATION-FIELDS(ttrecebimentos.id,ttcartaoDebito.id) NESTED
   DATA-RELATION for141 FOR ttrecebimentos, ttpixDebito         RELATION-FIELDS(ttrecebimentos.id,ttpixDebito.id) NESTED
