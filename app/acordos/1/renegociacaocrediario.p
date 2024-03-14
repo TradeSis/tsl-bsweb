@@ -241,7 +241,7 @@ for each ttrenegociacaocrediario.
            pdvdoc.clifor = 0
         then pdvdoc.clifor = 1.
 
-       pdvdoc.contnum  = trim(ttparcelasRenegociadas.numeroContrato).
+       pdvdoc.contnum  = trim(string(int(ttparcelasRenegociadas.numeroContrato))).
        pdvdoc.titpar   = int(seqParcela).
        pdvdoc.titdtven = aaaa-mm-dd_todate(dataVencimentoParcela).
        pdvdoc.modcod   = modalidadeContrato.
@@ -261,7 +261,7 @@ for each ttrenegociacaocrediario.
                         titulo.etbcod = contrato.etbcod and
                         titulo.clifor = contrato.clicod and
                         titulo.modcod = contrato.modcod and
-                        titulo.titnum = pdvdoc.contnum and
+                        titulo.titnum = string(contrato.contnum) and
                         titulo.titpar = pdvdoc.titpar /*and
                         titulo.titdtemi = contrato.dtinicial*/
                     no-lock no-error.

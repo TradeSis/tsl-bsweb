@@ -317,7 +317,7 @@ def var valteraprincipal as log.
                                 
 
             end.
-                                    
+            /*                        
             for each ttseguro where ttseguro.idpai = ttcontrato.id.
                 vtpseguro =  if pdvmov.ctmcod = "P44" or
                                 pdvmov.ctmcod = "P47"
@@ -410,7 +410,7 @@ def var valteraprincipal as log.
             /* movim seguro */                                    
                                                 
             end.
-
+            */
             /*delete ttcontrato.*/
             
             
