@@ -1,5 +1,5 @@
 <?php
-/* helio 092022 - reversa lojas  */
+
 
 include "config.php";
 
