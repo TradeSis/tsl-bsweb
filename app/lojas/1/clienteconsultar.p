@@ -13,7 +13,7 @@ def temp-table ttentrada serialize-name "dadosEntrada"
 
 def var vok as log.
 
-{api/acentos.i}
+{/admcom/progr/api/acentos.i}
 
 DEFINE VARIABLE lokJSON                  AS LOGICAL.
 
@@ -102,9 +102,7 @@ then do:
     create ttclien.
     ttclien.codigoFilial    = vetbcod.
     ttclien.codigoCliente   = clien.clicod.
-    ttclien.cpfCnpj         = if avail neuclien
-                              then string(neuclien.cpfcnpj)
-                              else clien.ciccgc.
+    ttclien.cpfCnpj         = clien.ciccgc.
     ttclien.nomeCliente     = clien.clinom.                              
     ttclien.dataNascimento  = clien.dtnasc.
     ttclien.telefone        = trim(string(clien.fone)).                                  
