@@ -1,4 +1,5 @@
 .htaccess
+config.php
 *.log
 *_log
 img
