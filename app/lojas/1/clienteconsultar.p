@@ -13,7 +13,7 @@ def temp-table ttentrada serialize-name "dadosEntrada"
 
 def var vok as log.
 
-{/admcom/progr/api/acentos.i}
+{api/acentos.i}
 
 DEFINE VARIABLE lokJSON                  AS LOGICAL.
 
