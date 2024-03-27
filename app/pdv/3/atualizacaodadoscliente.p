@@ -1340,6 +1340,7 @@ then do:
         end.
 
         
+        run log("ID_BIOMETRIA " + texto(AtualizacaoDadosCliente.ID_BIOMETRIA)).
 
 
         vchar = if vprocessa_credito
@@ -1491,8 +1492,6 @@ then do:
                      AtualizacaoDadosCliente.numero_pdv,
                      neuclien.sit_credito,
                      vchar).
-
-            run log("ID_BIOMETRIA " + texto(AtualizacaoDadosCliente.ID_BIOMETRIA)).
 
             if vneurotech
             then do:

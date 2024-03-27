@@ -131,9 +131,10 @@ def var valteraprincipal as log.
                 contrato.contnum       = int(pdvforma.contnum).
             end.     
 
+            
             ASSIGN contrato.vlseguro = 0. 
               contrato.clicod        = pdvdoc.clifor.
-              contrato.dtinicial     = aaaa-mm-dd_todate(dataInicial).
+              contrato.dtinicial     = vdatamov.
               contrato.etbcod        = pdvmov.etbcod.
               contrato.vltotal       = dec(ttcontrato.valorTotal) + dec(ttcontrato.valorEntrada).
               contrato.vlentra       = dec(ttcontrato.valorEntrada).
@@ -142,6 +143,7 @@ def var valteraprincipal as log.
               val_tfc = dec(ttcontrato.valorTFC).
               contrato.modcod        = pdvforma.modcod /*ttcontrato.modalidade*/ .
               contrato.DtEfetiva     = aaaa-mm-dd_todate(ttcontrato.dataEfetivacao).
+              contrato.dtinicial    = contrato.DtEfetiva. /* helio 190224 */
               contrato.VlIof         = dec(ttcontrato.valorIof).
               contrato.Cet           = dec(ttcontrato.taxaCet).
               contrato.TxJuros       = dec(ttcontrato.taxaMes).
@@ -170,6 +172,14 @@ def var valteraprincipal as log.
                                             /* helio 200421
                                             **dec(ttcontrato.valorTotal) - dec(ttcontrato.valorPrincipal) - dec(ttcontrato.valorIof).
                                             */    
+
+              contrato.vlf_principal = 0.            
+              contrato.vltotal = 0.
+              for each ttparcelas where ttparcelas.idpai = ttcontrato.id.
+                    contrato.vltotal = contrato.vltotal + dec(ttparcelas.valorParcela).
+                    contrato.vlf_principal = contrato.vlf_principal + dec(ttparcelas.valorPrincipal).
+                    
+              end.
               
               valteraprincipal = no.
               
@@ -178,7 +188,7 @@ def var valteraprincipal as log.
 
               contrato.nro_parcelas  = int(ttcontrato.qtdParcelas).
 
-              contrato.banco = if true_tolog(ttcontrato.contratoFinanceira)
+              contrato.banco = if true /*true_tolog(ttcontrato.contratoFinanceira)*/
                                then if pdvmov.ctmcod = "P47" 
                                     then 13 
                                     else 10
@@ -191,7 +201,7 @@ def var valteraprincipal as log.
                 then do:
 
                     
-                    contrato.banco = if true_tolog(ttcontrato.contratoFinanceira)
+                    contrato.banco = if true /*true_tolog(ttcontrato.contratoFinanceira)*/
                                      then if contrato.modcod = "CPN"
                                           then 13
                                           else 10
@@ -200,6 +210,7 @@ def var valteraprincipal as log.
                                      
                 end.
               
+            /*    
             if true_tolog(ttcontrato.contratoFinanceira) /* Marca Financeira */
             then do on error undo:
                             
@@ -210,6 +221,7 @@ def var valteraprincipal as log.
                 find sicred_contrato where recid(sicred_contrato) = psicred no-lock no-error.
             
             end.
+            */
             
             for each ttparcelas where ttparcelas.idpai = ttcontrato.id.
 
@@ -250,9 +262,11 @@ def var valteraprincipal as log.
                 
                 pdvmoeda.titdtven = aaaa-mm-dd_todate(ttparcelas.datavencimento).
 
-                if pdvmoeda.titdtven < pdvmoeda.datamov
-                then pdvmoeda.titdtven = pdvmoeda.datamov.
-
+                /* helio 190324 -retiradao
+                *if pdvmoeda.titdtven < pdvmoeda.datamov
+                *then pdvmoeda.titdtven = pdvmoeda.datamov.
+                */
+                
                 find first titulo where titulo.contnum = contrato.contnum and
                                   titulo.titpar  = pdvmoeda.titpar  
                         no-error.
@@ -297,13 +311,13 @@ def var valteraprincipal as log.
                     titulo.vlf_acrescimo  = contrato.vlf_acrescimo / contrato.nro_parcelas.
                     titulo.vlf_principal = dec(ttparcelas.valorPrincipal).
                
-                /* #27092022 helio */
+                /* helio 20032024
                 if valteraprincipal
                 then do:
                     assign
                         titulo.vlf_principal = contrato.vlf_principal / contrato.nro_parcelas.
                 end.
-                
+                */
                 
                 /* #02092022 */    
                 if  vctmcod = "VHS" or vctmcod = "D24"
@@ -311,9 +325,9 @@ def var valteraprincipal as log.
                     titulo.vlf_hubseg = titulo.vlf_principal.
                 end.
 
-                titulo.cobcod = if avail sicred_contrato
+                titulo.cobcod = 10. /*if avail  sicred_contrato
                                 then sicred_contrato.cobcod
-                                else 1.
+                                else 1.*/
                                 
 
             end.
@@ -365,7 +379,7 @@ def var valteraprincipal as log.
                 
                 contrato.vlseguro = dec(ttseguro.valorSeguro).
                 
-                contrato.vlf_principal = contrato.vlf_principal - dec(ttseguro.valorSeguro).
+                /*contrato.vlf_principal = contrato.vlf_principal - dec(ttseguro.valorSeguro).*/
                 
                 /* #02092022 */
                 if  vctmcod = "VHS" or vctmcod = "D24" 
@@ -374,7 +388,7 @@ def var valteraprincipal as log.
                 end.
                 for each titulo where titulo.contnum = contrato.contnum.
                     titulo.titdesc        = contrato.vlseguro / contrato.nro_parcela. /* apenas compatibilidade, porque nao usa mais este campo */
-                    titulo.vlf_principal  = contrato.vlf_principal / contrato.nro_parcelas.
+                    /*titulo.vlf_principal  = contrato.vlf_principal / contrato.nro_parcelas. helio 20032024 */
                     if  vctmcod = "VHS" or vctmcod = "D24"
                     then do:
                         titulo.vlf_hubseg = titulo.vlf_principal.
