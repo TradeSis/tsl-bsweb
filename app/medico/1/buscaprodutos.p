@@ -42,8 +42,8 @@ find first ttentrada no-error.
 for each medprodu no-lock.
     find produ of medprodu no-lock.
     
-    /* helio 24102022 */
-    if medprodu.idmedico = "DOC24_ROBOX" then next.
+    /* helio 27032024 ID 619030 e 623906 - Chama doutor familiar e Plus */
+    if medprodu.ativo = no then next.
     
     create ttmedprodu.
     ttmedprodu.procod     = produ.procod.
@@ -55,8 +55,14 @@ for each medprodu no-lock.
     ttmedprodu.valorServico      = trim(string(medprodu.valorServico,">>>>>>>>>>>>>>>>>>>>>>9.99")).
 
     for each medperfil of medprodu where medperfil.pativo = yes no-lock.
+            /* se o Perfil já foi enviado , não envia novamente */    
+            find first ttcampos where ttcampos.idPerfil = medperfil.idPerfil no-error.
+            if avail ttcampos then next.
+    
         for each medpercampos of medperfil where medpercampos.cativo = yes no-lock
             by medpercampos.ordem.
+            
+            
             create ttcampos.
             ttcampos.IDPerfil = medperfil.idPerfil.
             ttcampos.idcampo  = medpercampos.idcampo.
