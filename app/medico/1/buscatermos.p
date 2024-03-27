@@ -80,7 +80,7 @@ ttadesao.numeroComponente      = string(cmon.cxacod).
 ttadesao.nsuTransacao          = medadesao.nsuTransacao.
 
 vid = 1.
-COPY-LOB FROM FILE ("/admcom/progr/med/termoadesao.txt") TO textFile.
+COPY-LOB FROM FILE ("/admcom/progr/med/termoadesao_" + trim(CAPS(medadesao.idmedico)) + ".txt") TO textFile.
 
 create tttermos.
 tttermos.id = string(vid).
@@ -143,4 +143,5 @@ lokJson = hsaida:WRITE-JSON("FILE", varquivo, TRUE).
 
 os-command value("cat " + varquivo).
 os-command value("rm -f " + varquivo)
+
 
