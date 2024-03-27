@@ -236,11 +236,7 @@ for each ttrenegociacaocrediario.
         end.  
         
         pdvdoc.valor = dec(valorPago).
-        pdvdoc.clifor = dec(codigoCliente) no-error.
-        if pdvdoc.clifor = ? or
-           pdvdoc.clifor = 0
-        then pdvdoc.clifor = 1.
-
+         
        pdvdoc.contnum  = trim(string(int(ttparcelasRenegociadas.numeroContrato))).
        pdvdoc.titpar   = int(seqParcela).
        pdvdoc.titdtven = aaaa-mm-dd_todate(dataVencimentoParcela).
@@ -282,6 +278,11 @@ for each ttrenegociacaocrediario.
                 end.
             end.         
         end.
+
+        pdvdoc.clifor = dec(contrato.clicod) no-error.
+        if pdvdoc.clifor = ? or
+           pdvdoc.clifor = 0
+        then pdvdoc.clifor = 1.
     
        pdvdoc.pago_parcial =  string(true_tolog(pagtoParcial),"S/N"). 
        
@@ -300,7 +301,15 @@ for each ttrenegociacaocrediario.
        /* novacao baixa parcela origem pelo saldo */
        pdvdoc.valor_encargo = 0 /*dec(valorEncargoAtraso)*/.
        pdvdoc.desconto       = 0 /*dec(valorDispensaJuros)*/.
-       pdvdoc.valor         = titulo.titvlcob.
+       /* quando vem valor pago */
+       def var vvalorpago as dec.
+       vvalorpago = dec(valorPago) no-error.
+       if vvalorPago = ? then vvalorPago = 0.
+       pdvdoc.valor         = if vvalorPago = 0 then titulo.titvlcob else vvalorpago.
+       if pdvdoc.valor > titulo.titvlcob
+       then pdvdoc.valor_encargo = pdvdoc.valor - titulo.titvlcob.
+       if pdvdoc.valor < titulo.titvlcob
+       then pdvdoc.desconto = titulo.titvlcob - pdvdoc.valor.
        pdvdoc.titvlcob      = titulo.titvlcob.
        
                 find titprotparc where 
@@ -471,11 +480,13 @@ for each ttrenegociacaocrediario.
                 if voriginal_desconto < 0
                 then voriginal_desconto = 0.
                 
+                /* helio 20032024
                 contrato.vlf_principal = if voriginal_financiado > 0
                                          then if voriginal_desconto > 0
                                               then voriginal_financiado - voriginal_desconto
                                               else voriginal_financiado 
                                          else 0.
+                */
                 contrato.vlf_acrescimo  = vfinanciado - contrato.vlf_principal.
                 
                 /***/
@@ -501,16 +512,17 @@ for each ttrenegociacaocrediario.
                     titulo.modcod = contrato.modcod.
 
                     /* ID 152286 */
+                    /* helio 20032024
                     if titulo.titpar = 0
                     then do:
                         titulo.vlf_principal = 0.
                         titulo.vlf_acrescimo = 0.
                     end.
                     else do:
-                        titulo.vlf_principal = contrato.vlf_principal / contrato.nro_parcelas.
-                        titulo.vlf_acrescimo = contrato.vlf_acrescimo / contrato.nro_parcelas.
+                    *    titulo.vlf_principal = contrato.vlf_principal / contrato.nro_parcelas.
+                    *    titulo.vlf_acrescimo = contrato.vlf_acrescimo / contrato.nro_parcelas.
                     end.  
-                                  
+                    */              
                     
                     if vidacordo <> ?
                     then do:

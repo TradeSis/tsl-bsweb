@@ -653,6 +653,12 @@ then do.
             vneurotech = yes.
 
 
+    /* helio 190324 - aqssinatura digital */
+    if verificacreditovenda.ID_BIOMETRIA <> ? and verificacreditovenda.ID_BIOMETRIA <> ""
+    then do:
+        run log("GUARDA Biometria = " + string(clien.clicod) + " " + verificacreditovenda.ID_BIOMETRIA).
+        run crd/biometriaguarda.p (clien.clicod, verificacreditovenda.ID_BIOMETRIA)..
+    end.
 
     /* #1 LOG PARA PRIMEIRA AVALIACAO SUBMETE */
     vchar = if vneu_cdoperacao = ""
